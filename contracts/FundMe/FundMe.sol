@@ -8,6 +8,11 @@ contract FundMe {
     uint256 minimumUsd = 50 * 1e18;
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
+    address public owner;
+
+    constructor(){
+        owner = msg.sender;
+    }
 
     function fund() public payable {
 
@@ -17,15 +22,31 @@ contract FundMe {
 
     }
 
-    function withdraw() public {
+    function withdraw() public onlyOwner {
         for(uint256 funderIndex=0; funderIndex < funders.length; funderIndex++) {
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
         }
 
         funders = new address[] (0);
+       //transfer
+       // payable(msg.sender).transfer(address(this).balance);
+
+        //send
+       // bool sendSuccess = payable(msg.sender).send(address(this).balance);
+       // require(sendSuccess, "send failed");
+
+        //call
+        (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
+        require(callSuccess, "call failed");
+
+    }
+
+    modifier onlyOwner {
+        require(msg.sender == owner, "Sender is not owner!");
+        _;
+
     }
 
     
-
 }
