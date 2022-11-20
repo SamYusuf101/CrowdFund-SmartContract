@@ -3,6 +3,8 @@ pragma solidity ^0.8.8;
 
 import "./PriceConverter.sol";
 
+error Notowner();
+
 contract FundMe {
     using PriceConverter for uint256;
     uint256 public constant MINIMUM_USD = 50 * 1e18;
@@ -43,9 +45,18 @@ contract FundMe {
     }
 
     modifier onlyOwner {
-        require(msg.sender == i_owner, "Sender is not owner!");
+        //require(msg.sender == i_owner, "Sender is not owner!");
+        if(msg.sender != i_owner) {revert Notowner();}
         _;
 
+    }
+
+    receive() external payable {
+        fund();
+    }
+
+    fallback() external payable {
+        fund();
     }
 
     
