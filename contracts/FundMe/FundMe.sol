@@ -35,6 +35,7 @@ contract FundMe {
        // payable(msg.sender).transfer(address(this).balance);
 
         //send
+       //send
        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
        // require(sendSuccess, "send failed");
 
