@@ -31,7 +31,7 @@ contract FundMe {
         }
 
         funders = new address[] (0);
-       //transfer
+       //transfer!
        // payable(msg.sender).transfer(address(this).balance);
 
         //send
